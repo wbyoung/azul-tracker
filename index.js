@@ -37,7 +37,7 @@ var setup = function(BaseQuery, globalOptions) {
         }
         var filter = function(line) {
           return !opts.fullTrace &&
-            line.match(/azul-tracker\/index|azul\/lib|EventEmitter.emit/);
+            line.match(/azul-tracker\/index|azul\/lib|\(events.js:\d+:\d+\)/);
         };
         var filteredStack = _.dropWhile(stack, filter).join('\n');
 
