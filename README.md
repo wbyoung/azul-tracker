@@ -17,25 +17,56 @@ it when testing as well if you have a large test suite.
 require('azul-tracker')(db.query);
 
 // executed query will not generate a warning
-Article.objects.insert().then(function() {
-
-});
+Article.objects.insert().execute();
 
 // pinned query will not generate a warning
 var publishedArticles = Article.objects.where({ published: true }).pin();
-setImmediate(function() {
-  publishedArticles.fetch().then(function() {
-
-  });
-});
 
 // un-pinned query will generate a warning
 var publishedArticles = Article.objects.where({ published: true });
-setImmediate(function() {
-  publishedArticles.fetch().then(function() {
+```
 
+Multiple methods in Azul.js [execute a query][azul-execute]. These include:
+
+- `execute`
+- `fetch`
+- `fetchOne`
+- `find`
+- `findOrCreate`
+- `then`
+
+Sometimes you'll still want to create queries that are not executed immediately
+(before the next event loop iteration). This may be useful when promises are
+built across multiple asynchronous events:
+
+```js
+var articles = Article.objects.pin();
+var promise = Promise.resolve(); // empty promise to start things off
+
+if (req.session.userId) {
+  // if the user is logged in, look up the user from the database
+  promise = promise.then(function() {
+    return User.objects.find(req.session.userId);
+  })
+  .then(function(user) {
+    // if the user isn't an administrator, show them just their articles
+    if (!user.isAdmin) {
+      articles = articles.where({ author: user }).pin();
+    }
   });
-});
+}
+else {
+  // when the user is not logged in, just show public articles
+  articles = articles.where({ public: true }).pin();
+}
+
+// resolve any promises made up until this point & continue
+promise.then(function() {
+  return articles.fetch();
+})
+.then(function(articles) {
+  res.send({ articles: articles });
+})
 ```
 
 ## API
@@ -98,6 +129,7 @@ This does not disable tracking for derived queries, just for this one query.
 This project is distributed under the MIT license.
 
 [azul]: http://www.azuljs.com/
+[azul-execute]: http://www.azuljs.com/guides/queries/#executing
 
 [travis-image]: http://img.shields.io/travis/wbyoung/azul-tracker.svg?style=flat
 [travis-url]: http://travis-ci.org/wbyoung/azul-tracker
