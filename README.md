@@ -40,7 +40,7 @@ Sometimes you'll still want to create queries that are not executed immediately
 built across multiple asynchronous events:
 
 ```js
-var articles = Article.objects.pin();
+var articles = Article.objects.all().pin();
 var promise = Promise.resolve(); // empty promise to start things off
 
 if (req.session.userId) {
