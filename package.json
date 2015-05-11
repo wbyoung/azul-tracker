@@ -1,6 +1,6 @@
 {
   "name": "azul-tracker",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Azul.js Query Tracker",
   "main": "index.js",
   "scripts": {
