@@ -5,6 +5,14 @@
 A query tracking utility for [Azul.js][azul] that reports un-executed queries to
 help catch mistakes during development.
 
+## Overhead
+
+There is significant overhead when using this tool, and it is
+_strongly advised_ to _never_ enable it in production. You may want to disable
+it when testing as well if you have a large test suite.
+
+## Examples
+
 ```js
 require('azul-tracker')(db.query);
 
