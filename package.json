@@ -4,7 +4,8 @@
   "description": "Azul.js Query Tracker",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --report $(if [ \"$TRAVIS\" ]; then echo lcovonly; else echo html; fi) -- --recursive && if [ \"$TRAVIS\" ]; then cat ./coverage/lcov.info | ./node_modules/.bin/coveralls; fi"
+    "test": "istanbul cover node_modules/.bin/_mocha --report html --",
+    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly --"
   },
   "files": [
     "index.js",
@@ -40,7 +41,6 @@
   "devDependencies": {
     "azul": "^0.0.1-alpha.11",
     "chai": "^2.3.0",
-    "coveralls": "^2.11.2",
     "istanbul": "^0.3.13",
     "mocha": "^2.2.4",
     "sinon": "^1.14.1",
