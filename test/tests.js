@@ -4,8 +4,8 @@ var _ = require('lodash');
 var chai = require('chai');
 var expect = chai.expect;
 var sinon = require('sinon'); chai.use(require('sinon-chai'));
-var Class = require('azul/lib/util/class');
-var property = require('azul/lib/util/property').fn;
+var Class = require('corazon/class');
+var property = require('corazon/property');
 
 var track = require('../index');
 var chalk = require('chalk');
